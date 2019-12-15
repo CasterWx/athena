@@ -32,6 +32,7 @@ public class NotificationController  {
     private Result<Message> insert(@RequestBody MessageRequest request){
         Result<Message> result = new Result<>(HResult.H_OK);
         Integer saidId = request.getSaidId();
+        String said = request.getSaid();
         Message message = null;
         if (saidId != null){
             message = repository.findBySaidId(saidId);
@@ -42,9 +43,19 @@ public class NotificationController  {
                 repository.save(message);
                 result.setData(message);
                 return result;
+            } else {
+
             }
-        } else {
+        } else if (said != null){
             // 目前只根据saidId插入
+            List<Message> list = repository.findBySaidLike(said);
+            Message msg = list.get(0);
+            List<Reply> replies = msg.getReplys();
+            replies.add(request.getReply());
+            msg.setReplys(replies);
+            repository.save(msg);
+            result.setData(msg);
+            return result;
         }
         return result;
     }

@@ -1,6 +1,7 @@
 package com.athena.athena.manager;
 
 public class SearchFactory {
+
     public static SearchFieldregister getSearchFactory(String filedName){
         switch (filedName){
             case "replyId":
