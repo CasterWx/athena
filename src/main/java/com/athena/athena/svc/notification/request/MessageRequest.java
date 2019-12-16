@@ -1,6 +1,7 @@
 package com.athena.athena.svc.notification.request;
 
 import com.athena.athena.bean.Reply;
+import com.athena.athena.mongobean.Message;
 
 public class MessageRequest {
     private Integer saidId;
