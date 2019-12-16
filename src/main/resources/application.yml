@@ -3,3 +3,5 @@ spring:
     elasticsearch:
       cluster-name: my-application
       cluster-nodes: 127.0.0.1:9300
+    mongodb:
+      uri: mongodb://localhost:27017/testdb
