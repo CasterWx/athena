@@ -1,5 +1,6 @@
 package com.athena.athena.dao;
 
+import com.athena.athena.bean.Reply;
 import com.athena.athena.mongobean.Message;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -9,16 +10,12 @@ import java.util.List;
 
 public interface MessageDAO {
 
-    List<Message> findListByFromAndTo(Long fromId, Long toId, Integer page, Integer rows);
+    Message findMessageById(Integer saidId);
 
-    List<Message> findListByFromAndToNotRead(Long toId, Integer status);
-
-    Message findMessageById(String id);
-
-    UpdateResult updateMessageState(ObjectId id, Integer status);
+    Message updateReply(Integer saidId, Reply reply);
 
     Message saveMessage(Message message);
 
-    DeleteResult deleteMessage(String id);
+    DeleteResult deleteMessage(Integer saidId);
 
 }
