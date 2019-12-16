@@ -90,4 +90,15 @@ public class Message {
     public void setNumberOf(Integer numberOf) {
         this.numberOf = numberOf;
     }
+
+    public com.athena.athena.mongobean.Message toData(){
+        com.athena.athena.mongobean.Message message = new com.athena.athena.mongobean.Message();
+        message.setSaidId(this.getSaidId());
+        message.setSaid(this.getSaid());
+        message.setFromUser(this.getFromUser());
+        message.setToUser(this.getToUser());
+        message.setReplys(this.getReplys());
+        message.setNumberOf(this.getNumberOf());
+        return message;
+    }
 }

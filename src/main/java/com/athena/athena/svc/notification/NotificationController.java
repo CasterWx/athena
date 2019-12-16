@@ -4,6 +4,7 @@ import com.athena.athena.bean.Message;
 import com.athena.athena.bean.Reply;
 import com.athena.athena.common.HResult;
 import com.athena.athena.common.Result;
+import com.athena.athena.dao.MessageDAOImpl;
 import com.athena.athena.elastic.Repository;
 import com.athena.athena.manager.SearchFactory;
 import com.athena.athena.manager.SearchFieldregister;
@@ -21,6 +22,9 @@ public class NotificationController  {
 
     @Autowired
     private Repository repository;
+
+    @Autowired
+    private MessageDAOImpl messageDAO ;
 
     /**
      * @param request
@@ -95,6 +99,9 @@ public class NotificationController  {
         list.add(new Reply(1004,20,"https://pic.cnblogs.com/avatar/1291955/20191008170543.png",-1,true,0));
         Message result = new Message(1000,"antzuhl","athena","在吗",list,0);
         repository.save(result);
+
+        messageDAO.saveMessage(result.toData());
+
         return result;
     }
 }

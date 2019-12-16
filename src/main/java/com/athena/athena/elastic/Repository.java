@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public interface Repository extends ElasticsearchRepository<Message,Long>{
     Message findBySaidId(Integer saidId);
-    List<Message> findByReplyDataLike(String replyData);
-    List<Message> findByReplyId(Integer replyId);
+//    List<Message> findByReplyDataLike(String replyData);
+//    List<Message> findByReplyId(Integer replyId);
     List<Message> findBySaidLike(String said);
 }

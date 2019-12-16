@@ -1,5 +1,6 @@
 package com.athena.athena.mongobean;
 
+import com.athena.athena.bean.Reply;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,6 @@ import java.util.List;
 @Document(collection = "athena_chats")
 public class Message {
     @Id
-    private ObjectId id;
     @Indexed
     @Field("saidId")
     private Integer saidId;
