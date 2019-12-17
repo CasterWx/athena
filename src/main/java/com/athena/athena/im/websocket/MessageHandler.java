@@ -108,7 +108,15 @@ public class MessageHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws IOException {
         Long uid = (Long) session.getAttributes().get("uid");
         ConMsg conMsg = new ConMsg(-1, UserData.USER_MAP.get(uid).getUsername() + "退出连接。");
-        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(conMsg)));
+        SESSION.forEach((s,y) -> {
+            if (s!=uid){
+                try {
+                    y.sendMessage(new TextMessage(objectMapper.writeValueAsString(conMsg)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         SESSION.remove(uid);
         logger.info("Exit Antz-IM！");
     }
