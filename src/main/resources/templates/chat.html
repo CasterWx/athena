@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://java.sun.com/jsf/composite">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat-Room</title>
+    <style type="text/css">
+        .talk_con{
+            width:600px;
+            height:800px;
+            border:1px solid #666;
+            margin:50px auto 0;
+            background:#f9f9f9;
+        }
+        .talk_show{
+            width:580px;
+            height:700px;
+            border:1px solid #666;
+            background:#fff;
+            margin:10px auto 0;
+            overflow:auto;
+        }
+        .talk_input{
+            width:580px;
+            margin:10px auto 0;
+        }
+        .whotalk{
+            width:80px;
+            height:30px;
+            float:left;
+            outline:none;
+        }
+        .talk_word{
+            width:420px;
+            height:26px;
+            padding:0px;
+            float:left;
+            margin-left:10px;
+            outline:none;
+            text-indent:10px;
+        }
+        .talk_sub{
+            width:56px;
+            height:30px;
+            float:left;
+            margin-left:10px;
+        }
+        .AntzUhl{
+            margin:10px;
+        }
+        .AntzUhl span{
+            display:inline-block;
+            background:#0181cc;
+            border-radius:10px;
+            color:#fff;
+            padding:5px 10px;
+        }
+        .Athena{
+            margin:10px;
+            text-align:center;
+        }
+        .Athena span{
+            background:#ef8201;
+            border-radius:10px;
+            color:#fff;
+            padding:5px 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        //
+        var conn = window.location.host.replace("http://").replace("https://");
+        var myid = window.location.href.split('/');
+        var exampleSocket = new WebSocket("ws://"+conn+"/ws/"+myid[4]);
+        sendText = function() {
+            // Construct a msg object containing the data the server needs to process the message from the chat client.
+            var touser = window.location.href.split('/');
+
+            var msg = {
+                toId: touser[touser.length-1],
+                said: document.getElementById("talkwords").value,
+                type: document.getElementById("who").value == true,
+                saidId: document.getElementById("msgid").value,
+                date: Date.now()
+            };
+
+            // Send the msg object as a JSON-formatted string.
+            exampleSocket.send(JSON.stringify(msg));
+
+            // Blank the text input element, ready to receive the next line of text from the user.
+        };
+
+        exampleSocket.onmessage = function(event) {
+            var msg = event.data;
+            var str ;
+            if (JSON.parse(msg)['said']!=null){
+                str = '<div class="AntzUhl">'+ '<span>'+ "saidId:"+ JSON.parse(msg)['saidId']  + '</span>' + '<span>' +"type:" + JSON.parse(msg)['type']  +'</span>' +'<span>' + "msg:" +JSON.parse(msg)['said'] +'</span></div>';
+            } else {
+                str = '<div class="Athena"><span>' + JSON.parse(msg)['msg'] +'</span></div>';
+            }
+            document.getElementById("words").innerHTML = document.getElementById("words").innerHTML + str;
+        };
+
+        exampleSocket.onclose = function (ev) {
+            alert("您的连接已断开...请刷新重连")
+        };
+
+        window.onload = function(){
+
+            var Words = document.getElementById("words");
+            var Who = document.getElementById("who");
+            var TalkWords = document.getElementById("talkwords");
+            var TalkSub = document.getElementById("talksub");
+            TalkSub.onclick = function(){
+                //定义空字符串
+                var str = "";
+                if(TalkWords.value == ""){
+                    // 消息为空时弹窗
+                    alert("消息不能为空");
+                    return;
+                }
+                sendText();
+                if(Who.value == 0){
+                    //如果Who.value为0 ,就是新的话题
+                    str = '<div class="AntzUhl"><span>(Message) :' + TalkWords.value +'</span></div>';
+                }
+                else{
+                    str = '<div class="AntzUhl"><span>(Reply) :' + TalkWords.value +'</span></div>' ;
+                }
+                Words.innerHTML = Words.innerHTML + str;
+                document.getElementById("talkwords").value = "";
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="talk_con">
+    <div class="talk_show" id="words">
+        <div class="AntzUhl" th:each="item:${chatData}">
+<!--            <span id="user" th:text="${item.sendDate}"></span>-->
+            <span id="bsay" class="Athena" style="background-color: #ef8201;text-align: center;align-items: center" th:text="${item.sendDate}"></span><br>
+            <span class="AntzUhl" id="asay1" th:text="${item.fromUser.username}"></span>
+            <span class="AntzUhl" id="asay2" th:text="@{'type:'+${item.type}}"></span>
+            <span class="AntzUhl" id="asay3" th:text="@{'saidId:'+${item.saidId}}"></span>
+            <span class="AntzUhl" id="asay4" th:text="@{'replyId:'+${item.replyId}}"></span>
+            <span class="AntzUhl" id="asay5" th:text="${item.said}"></span>
+        </div>
+    </div>
+    <div class="talk_input">
+        <select class="whotalk" id="who">
+            <option value="1">新话题:</option>
+            <option value="0">回复:</option>
+        </select>
+        <input type="text" class="whotalk" id="msgid">
+        <input type="text" class="talk_word" id="talkwords">
+        <input type="button" onclick="sendText()" value="发送" class="talk_sub" id="talksub">
+    </div>
+</div>
+
+</body>
+</html>
