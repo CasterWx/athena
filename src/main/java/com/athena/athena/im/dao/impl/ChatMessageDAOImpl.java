@@ -24,7 +24,7 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<ChatMessage> findListByFromAndTo(Long fromId, Long toId, Integer page, Integer rows) {
+    public List<ChatMessage> findListByFromAndTo(Long fromId, Long toId) {
         Criteria fromList = new Criteria().andOperator(
                 Criteria.where("fromUser.id").is(fromId),
                 Criteria.where("toUser.id").is(toId)
@@ -34,9 +34,8 @@ public class ChatMessageDAOImpl implements ChatMessageDAO {
                 Criteria.where("toUser.id").is(fromId)
         );
         Criteria criteria = new Criteria().orOperator(fromList, toList);
-        PageRequest pageRequest = PageRequest.of(page-1, rows, Sort.by(Sort.Direction.ASC,"send_date"));
 
-        Query query = new Query(criteria).with(pageRequest);
+        Query query = new Query(criteria);
         System.out.println(query);
         return this.mongoTemplate.find(query, ChatMessage.class);
     }

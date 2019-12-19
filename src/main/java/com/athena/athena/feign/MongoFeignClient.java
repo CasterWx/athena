@@ -15,4 +15,6 @@ public interface MongoFeignClient {
 
     @RequestMapping(value = "/message")
     Result<Message> insertMessage(@RequestBody MessageRequest request);
+
+
 }

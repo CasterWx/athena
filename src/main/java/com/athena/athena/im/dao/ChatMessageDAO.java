@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ChatMessageDAO {
 
-    List<ChatMessage> findListByFromAndTo(Long fromId, Long toId, Integer page, Integer rows);
+    List<ChatMessage> findListByFromAndTo(Long fromId, Long toId);
 
     List<ChatMessage> findListByFromAndToNotRead(Long toId, Integer status);
 

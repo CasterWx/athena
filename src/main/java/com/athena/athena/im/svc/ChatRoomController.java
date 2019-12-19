@@ -25,7 +25,7 @@ public class ChatRoomController {
     public ModelAndView chatRoom(@PathVariable Integer myid, @PathVariable Integer toid){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("chat");
-        List<ChatMessage> chatMessages = chatMessageDAO.findListByFromAndTo(Long.valueOf(myid), Long.valueOf(toid), 1, 10);
+        List<ChatMessage> chatMessages = chatMessageDAO.findListByFromAndTo(Long.valueOf(myid), Long.valueOf(toid));
         modelAndView.addObject("chatData",chatMessages);
         log.info("/chat controler");
         return modelAndView;
