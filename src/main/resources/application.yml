@@ -11,5 +11,7 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+        namespace: 11c1bf0e-8a0f-4aef-98b0-2a914a0f02aa
+        cluster-name: NJ
 server:
   port: 8080
