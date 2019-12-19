@@ -5,3 +5,11 @@ spring:
       cluster-nodes: 127.0.0.1:9300
     mongodb:
       uri: mongodb://localhost:27017/testdb
+  application:
+    name: athena-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+server:
+  port: 8080
